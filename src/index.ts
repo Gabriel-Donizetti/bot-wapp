@@ -1,5 +1,10 @@
 import qrcode from 'qrcode-terminal';
 import { Client, LocalAuth, MessageMedia } from 'whatsapp-web.js';
+import  Message  from './Message';
+
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 
 const client = new Client({
     authStrategy: new LocalAuth(),
@@ -13,20 +18,18 @@ client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
 });
 
-client.on('ready', () => {
+client.on('ready', async () => {
     console.log('Client conectado!');
+
+    const msg = new Message(client)
+
+    await msg.textMessage('554188939448@c.us', 'teste')
 });
 
 client.on('message', msg => {
     if (msg.body === 'tico') {
-        msg.reply(getReply());
+        msg.reply('teco');
     }
 });
 
 client.initialize();
-
-function getReply() {
-    const msg: string[] = ['tuco', 'teco', 'tico', 'tucando', 'tucava', 'tuquei', 'tucaivos', 'tucaras'];
-    const ind: number = Math.floor(Math.random() * msg.length);
-    return msg[ind];
-}
