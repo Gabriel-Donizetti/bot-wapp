@@ -1,5 +1,6 @@
 import qrcode from 'qrcode-terminal';
 import { Client, LocalAuth } from 'whatsapp-web.js';
+import Message from './Message';
 
 interface Chat {
     name: string;
@@ -8,6 +9,7 @@ interface Chat {
 
 export default class ClientWapp {
     private client: Client;
+    private message: Message;
 
     constructor() {
         this.client = new Client({
@@ -18,10 +20,20 @@ export default class ClientWapp {
             },
         });
 
-        this.initialize();
+        this.message = new Message(this.client);
+
+        // this.initialize()
     }
 
-    private initialize() {
+    public static async init(): Promise<ClientWapp> {
+        const c = new ClientWapp();
+
+        await c.client.initialize()
+
+        return c
+    }
+
+    private async initialize() {
         this.client.on('qr', (qr) => {
             qrcode.generate(qr, { small: true });
         });
@@ -29,9 +41,12 @@ export default class ClientWapp {
         this.client.on('ready', () => {
             console.log('Client conectado!');
             this.getChats()
+
+            //this.message.imgMessage('554196261489@c.us', 'D:\\Projetos_\\bot-wapp\\img\\img.jpg')
+
         });
 
-        this.client.initialize();
+        await this.client.initialize();
     }
 
     private async getChats(): Promise<Chat[]> {
@@ -51,5 +66,14 @@ export default class ClientWapp {
             console.error('Nenhum chat encontrado\n', error);
             return [];
         }
+    }
+
+
+    public get getClient() {
+        return this.client
+    }
+
+    public get getMessage() {
+        return this.message;
     }
 }
