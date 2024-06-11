@@ -15,11 +15,13 @@
   "devDependencies": {
     "@types/node": "^20.14.2",
     "@types/qrcode-terminal": "^0.12.2",
+    "@types/sleep": "^0.0.12",
     "tsx": "^4.13.2",
     "typescript": "^5.4.5"
   },
   "dependencies": {
     "qrcode-terminal": "^0.12.0",
+    "sleep": "^6.3.0",
     "whatsapp-web.js": "^1.23.0"
   }
 }

@@ -1,26 +1,52 @@
 // Main.ts
-import ClientWapp from './ClientWapp';
+import { Client, LocalAuth } from 'whatsapp-web.js';
+import qrcode from "qrcode-terminal";
+import { TextMessage } from './TextMessage';
+import { ImageMessage } from './ImgMessage';
+
 
 class Main {
     public static async main() {
-        const c = new ClientWapp();
+        const c = new Client({
+            authStrategy: new LocalAuth(),
+            webVersionCache: {
+                type: "remote",
+                remotePath:
+                  "https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html",
+              },
+        });
 
-        // Aguarda a inicialização do cliente
-        // await new Promise<void>((resolve) => {
-        //     c.getClient.on('ready', () => {
-        //         resolve();
-        //     });
-        // });
+        c.on('ready', async () => {
+            console.log('Client is ready!');
 
-        console.log('Status:', c.getStatus);
+            const txt = new TextMessage(c)
+            const img = new ImageMessage(c)
 
-        if(c.getStatus == 'ready') {
-            await c.getTxt.textMessage('554197825044@c.us', 'funcionou essa bomba, manda uma img pra teste');
-        }
+            //console.log(await c.getChats())
 
-        // await c.getImg.downloadImage(); // Supondo que `downloadImage` seja um método assíncrono
+            const a = ['120363307880892227@g.us', '120363307880892227@g.us', '120363307880892227@g.us', '120363307880892227@g.us', '120363307880892227@g.us', '120363307880892227@g.us']
+
+            txt.multTextMessage(a, 'multi mensagens')
+
+            img.sendImage('120363307880892227@g.us', 'src/img/1718124595718_undefined.jpeg')
+            img.downloadImage()
+
+        });
+
+        c.on("authenticated", () => {
+            console.log("Autenticado com sucesso!");
+          });
+      
+        c.on("auth_failure", (msg) => {
+            console.error("Falha na autenticação:", msg);
+          });
+
+        c.on('qr', qr => {
+            qrcode.generate(qr, { small: true });
+        });
+
+        c.initialize();
     }
 }
 
-// Chama o método main
 Main.main();

@@ -1,4 +1,5 @@
 import { Client } from "whatsapp-web.js";
+import { msleep } from 'sleep'
 
 export class TextMessage{
     c: Client
@@ -20,6 +21,7 @@ export class TextMessage{
 
     public async multTextMessage(to: Array<string>, msg: string){
         to.forEach(async to =>{
+            //msleep(2000)
             const res = await this.c.sendMessage(to, msg)
 
             if (res.ack = -1) {
