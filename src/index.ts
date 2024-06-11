@@ -1,15 +1,13 @@
-import  Message  from './Message';
 import ClientWapp from './ClientWapp';
 
 
-ClientWapp.init().then((c) => c.getMessage.textMessage('554196261489@c.us', 'iniciou'));
+class Main{
+    public static async main(){
+        const c = new ClientWapp;
 
+        c.getTxt.textMessage('554197825044@c.us', 'funcionou essa bomba, manda uma img pra teste')
 
-
-//msg.textMessage()
-//msg.audioMessage()
-
-// { name: 'Gabriel Donizetti Leite Com Pera', id: '554196261489@c.us' },
-
-//1 - Enviar enquete (poll)
-//2 - 
+        c.getImg.downloadImage
+    }
+}
+ 
